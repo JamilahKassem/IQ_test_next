@@ -56,23 +56,6 @@ The frontend uses WebSockets to connect to the backend server on ports **9001** 
 
 3. If your backend runs on a different host or you are deploying, update these values accordingly.
 
-## Database setup
-
-The project requires a database that the backend will connect to. The SQL file needed to create and seed this database is included in the project files.
-
-1. Locate the SQL file in the project (for example `schema.sql`, `database.sql`, or similar).
-2. Import or run this SQL file in your database server (e.g., MySQL or MariaDB) using your preferred tool:
-   - A GUI client (like MySQL Workbench, phpMyAdmin, etc.), or
-   - Command line:
-
-     ```bash
-     mysql -u YOUR_USER -p YOUR_DATABASE < path/to/file.sql
-     ```
-
-3. Ensure the backend’s database configuration matches the database name, user, and password you used when creating the database.
-
-> Note: The actual database connection is handled by the backend; the frontend just assumes the backend and database are configured and running.
-
 ## Running the frontend
 
 From the frontend project directory:
@@ -113,7 +96,4 @@ Make sure your backend server is running and listening on ports 9001 and 9002 so
 - **Build or dev server errors**
   - Make sure `npm install` completed successfully.
   - Delete the `node_modules` folder and run `npm install` again if necessary.
-- **Database-related issues**
-  - Ensure the SQL file was imported correctly into your database.
-  - Confirm that the backend configuration (database name, user, password, host) matches your database setup.
 ```
