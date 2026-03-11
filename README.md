@@ -96,4 +96,3 @@ Make sure your backend server is running and listening on ports 9001 and 9002 so
 - **Build or dev server errors**
   - Make sure `npm install` completed successfully.
   - Delete the `node_modules` folder and run `npm install` again if necessary.
-```
