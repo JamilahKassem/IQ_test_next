@@ -1,5 +1,4 @@
 'use client'
-import { request } from './connectHTTP';
 
 interface AdminProps {
     debug?: boolean;
@@ -7,7 +6,7 @@ interface AdminProps {
 function NextQeustion({ debug = false }: AdminProps) {
     const fetchData = async () => {
         try {
-            await request(`next`,debug);
+            // await request(`next`,debug);
         } catch (err) {}
     };
     fetchData().then(() => {

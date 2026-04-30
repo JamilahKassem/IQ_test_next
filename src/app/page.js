@@ -4,7 +4,7 @@ import ConnectSocket from "./shared/connectSocket";
 import {useState,useRef } from "react";
 import Login from './shared/Login.tsx';
 import NextQeustion from "./shared/Admin.ts";
-import {useAuth} from "./shared/AuthContext";
+import {useAuth} from "./shared/AuthContext.tsx";
 
 function App()
 {

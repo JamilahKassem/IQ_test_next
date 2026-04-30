@@ -8,6 +8,7 @@ interface User {
     id: number;
     name: string;
     school: string;
+    isAdmin: boolean;
 }
 
 interface LoginProps {
@@ -50,8 +51,9 @@ export default function Login({ login, loading, debug }: LoginProps) {
             if (debug) console.log("Logging request", userData);
 
             try {
-                const user = await loginUser(userData);
-                login(user as User);
+                const user = await loginUser(userData) as User;
+                user.isAdmin = isAdmin;
+                login(user);
             } catch (error) {
                 if (debug) console.error("Login error:", error);
                 const message = error instanceof Error

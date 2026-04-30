@@ -1,6 +1,5 @@
 'use client'
 import {useEffect, useState} from 'react';
-import { request } from './connectHTTP';
 
 function Qeustion({ qid, user, debug, phase }) {
     const [question, setQuestion] = useState([]);
@@ -13,13 +12,13 @@ function Qeustion({ qid, user, debug, phase }) {
         }else{
             const fetchData = async () => {
                 try {
-                    const data = await request(`questions/${user.uid}`,debug);
-                    setQuestion(data);
-                    setAnswer(data.Answer)
-                    setSaved(false);
-                    if (debug){
-                        console.log("creating a question with",data);
-                    }
+                    // const data = await request(`questions/${user.uid}`,debug);
+                    // setQuestion(data);
+                    // setAnswer(data.Answer)
+                    // setSaved(false);
+                    // if (debug){
+                    //     console.log("creating a question with",data);
+                    // }
                 } catch (err) {}
             };
             fetchData().then(() => {if (debug)console.log("fetsh done")});
@@ -45,16 +44,16 @@ function Qeustion({ qid, user, debug, phase }) {
         if(Answer === null)return;
         const SendData = async () => {
             try {
-                const questionData = {uid: user.uid, answer: Answer};
-                if(debug)console.log("Sending answer", questionData)
-                let data = await request(`Answer`,debug,false,questionData);
-                setSent(true);
-                setSaved(true);
-                if (data.success){
-                    console.log("Answer sent");
-                }else{
-                    console.log("Answer failed");
-                }
+                // const questionData = {uid: user.uid, answer: Answer};
+                // if(debug)console.log("Sending answer", questionData)
+                // let data = await request(`Answer`,debug,false,questionData);
+                // setSent(true);
+                // setSaved(true);
+                // if (data.success){
+                //     console.log("Answer sent");
+                // }else{
+                //     console.log("Answer failed");
+                // }
             } catch (err) {}
         };
         SendData().then(() => {if (debug)console.log("fetsh done")});
