@@ -2,18 +2,47 @@
   "name": "iqtest",
   "version": "0.1.0",
   "private": true,
+  "description": "a realtime examination platform",
+  "keywords": [
+    "next",
+    "real-time",
+    "sqlite",
+    "prisma",
+    "typescript"
+  ],
+  "homepage": "https://github.com/JamilahKassem/IQ_test_next#readme",
+  "bugs": {
+    "url": "https://github.com/JamilahKassem/IQ_test_next/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamilahKassem/IQ_test_next.git"
+  },
+  "license": "ISC",
+  "author": "Jamil Ahmad Kassem",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
-    "axios": "^1.13.5",
+    "@prisma/adapter-better-sqlite3": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "babel-plugin-react-compiler": "1.0.0"
+    "@types/bcrypt": "^6.0.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.6.0",
+    "babel-plugin-react-compiler": "1.0.0",
+    "prisma": "^7.8.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }
