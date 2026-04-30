@@ -2,19 +2,22 @@
 import {useEffect, useState} from 'react';
 import {request} from "@/app/shared/connectHTTP";
 
-export default function Login({ children, login, user, logout, loading, debug }) {
+export default function Login({ login, loading, debug })
+{
     const [uid, setuid] = useState("");
     const [password, setPassword] = useState("");
     const [admin, setAdmin] = useState(false);
     const [failed, set_failed] = useState(0);
-    useEffect(() => {
+    useEffect(() =>
+    {
         let loginTimeout;
         if (failed !== 0) {
             loginTimeout = setTimeout(() => {set_failed(0)}, 2000);
         }
         return () => clearTimeout(loginTimeout);
     }, [failed]);
-    const handleLogin = (e) => {
+    const handleLogin = (e) =>
+    {
         e.preventDefault();
         if ((uid === "" && !admin) || password === "") {set_failed(1);return;}
         const fetchData = async () => {
@@ -33,12 +36,11 @@ export default function Login({ children, login, user, logout, loading, debug })
                 }
             } catch (err) {}
         };
-        fetchData().then(() => {if (debug)console.log("fetsh done")});
+        fetchData().then(() => {if (debug)console.log("fetch done")});
     };
 
     if (loading) return <p>Loading...</p>;
-    if (!user) {
-        return (
+    return (
         <div>
             <h2>Login</h2>
             {failed === 1 && (<p style={{ color: "red" }}>Please enter your ID and password.</p>)}
@@ -51,13 +53,4 @@ export default function Login({ children, login, user, logout, loading, debug })
             </form>
         </div>
     );
-    }
-
-    return (
-        <div>
-            <button onClick={logout}>Logout</button>
-            {children}
-        </div>
-    );
-
 }
