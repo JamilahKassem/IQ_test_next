@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useState, type ChangeEvent } from 'react';
+import {addResult, getAnswer} from "./prisma";
+import type {QuestionData} from "../page";
 
 // Define the User interface (matching your AuthContext)
 interface User {
@@ -8,49 +10,41 @@ interface User {
     school?: string;
     isAdmin: boolean;
 }
-
-// Define the Question data structure
-interface QuestionData {
-    ID: number;
-    Question: string;
-    number_answers: number;
-    Answer?: number;
+interface AnswerData {
+    answer: number;
 }
 
 interface QuestionProps {
-    qid: number;
+    question: QuestionData | null;
     user: User;
     debug: boolean;
     phase: number;
 }
 
-function Question({ qid, user, debug, phase }: QuestionProps) {
-    const [question, setQuestion] = useState<QuestionData | null>(null);
-    const [answer, setAnswer] = useState<number | null>(null);
+function Question({ question, user, phase, debug }: QuestionProps) {
+    const [answer, setAnswer] = useState<number>(-1);
     const [sent, setSent] = useState<boolean>(false);
     const [saved, setSaved] = useState<boolean>(true);
 
     useEffect(() => {
-        if (qid === -1) {
-            setQuestion(null);
-        } else {
-            const fetchData = async () => {
-                try {
-                    // Logic for fetching question from server would go here
-                    // const data: QuestionData = await request(`questions/${user.id}`, debug);
-                    // setQuestion(data);
-                    // setAnswer(data.Answer ?? null);
-                    // setSaved(false);
-                } catch (err) {
-                    if (debug) console.error("Fetch error:", err);
+        const fetchAnswer = async () => {
+            if (!question) return null;
+            try {
+                const data: AnswerData | null = await getAnswer(question.id, user.id, debug);
+                if(data){
+                    setAnswer(data.answer);
+                    setSaved(false);
                 }
-            };
-            fetchData().then(() => {
-                if (debug) console.log("Fetch done");
-            });
-        }
-    }, [qid, user.id, debug]);
+            } catch (err) {
+                if (debug) console.error("Fetch error:", err);
+            }
+        };
+        fetchAnswer().then(() => {
+            if (debug) console.log("Fetch done");
+        });
+    }, [question]);
 
+    // wait two seconds before clearing the sent state
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
         if (sent) {
@@ -59,19 +53,20 @@ function Question({ qid, user, debug, phase }: QuestionProps) {
         return () => clearTimeout(timer);
     }, [sent]);
 
-    // Automatically send a answer when phase changes from 4 (Active) to 3 (Get Ready/Paused)
+    // Automatically send an answer when a phase changes from 4 (Active) to 3 (Get Ready/Paused)
     useEffect(() => {
         if (phase === 3 && !saved) {
-            console.log("Sending answer after time done");
-            sendAnswer();
+            if(debug){
+                console.log("Sending answer after time done");
+            }
+            sendAnswer().then(r => console.log("Answer sent:", r));
         }
     }, [phase, saved]);
 
     const sendAnswer = async () => {
-        if (answer === null) return;
+        if (answer === -1 || !question) return;
         try {
-            // const questionData = { uid: user.id, answer: answer };
-            // await request(`Answer`, debug, false, questionData);
+            await addResult(question.id, user.id, answer, debug);
             setSent(true);
             setSaved(true);
         } catch (err) {
@@ -95,8 +90,8 @@ function Question({ qid, user, debug, phase }: QuestionProps) {
                 <img
                     alt="Question Task"
                     className="center-self question"
-                    src={`/images/${question.Question}`}
-                    key={question.ID}
+                    src={`/images/${question.image}`}
+                    key={question.id}
                 />
                 {!user.isAdmin && (
                     <>

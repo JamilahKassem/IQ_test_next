@@ -1,10 +1,10 @@
-'use client';
 import { useEffect, useRef } from "react";
 import config from "../config/config";
+import type {QuestionData} from "../page";
 
 interface ConnectSocketProps {
     set_phase: (phase: number) => void;
-    set_qid: (qid: number) => void;
+    set_question: (question: QuestionData) => void;
     set_next: (next: number) => void;
     set_context: (socket: WebSocket | null) => void;
     debug: boolean;
@@ -12,10 +12,13 @@ interface ConnectSocketProps {
 
 interface SocketMessage {
     type: 'Pause' | 'Next' | 'End';
-    a: number;
+    id?: number;
+    time?: number;
+    number_answers?: number;
+    image?: string;
 }
 
-function ConnectSocket({ set_phase, set_qid, set_next, set_context, debug }: ConnectSocketProps) {
+function ConnectSocket({ set_phase, set_question, set_context, debug }: ConnectSocketProps) {
     const socket = useRef<WebSocket | null>(null);
     const port = config.portSocket;
     let reconnectTimeout: ReturnType<typeof setTimeout>;
@@ -51,12 +54,17 @@ function ConnectSocket({ set_phase, set_qid, set_next, set_context, debug }: Con
 
                     if (data.type === 'Pause') {
                         set_phase(3);
-                        set_next(data.a);
                     }
                     if (data.type === 'Next') {
-                        if (data.a !== -1) {
+                        if(data.id && data.image && data.time && data.number_answers){
+                            set_question({
+                                id: data.id,
+                                image: data.image,
+                                time: data.time,
+                                number_answers: data.number_answers,
+                                answer: -1,
+                            });
                             set_phase(4);
-                            set_qid(data.a);
                         }
                     }
                     if (data.type === 'End') {

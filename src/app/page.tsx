@@ -8,6 +8,15 @@ import NextQuestion from "./shared/Admin";
 import { useAuth } from "./shared/AuthContext";
 import React from "react";
 
+// Define the Question data structure
+export interface QuestionData {
+    id: number;
+    image: string;
+    time: number;
+    number_answers: number;
+    answer: number;
+}
+
 function App() {
     const { login, user, logout, loading } = useAuth();
     const debug = false;
@@ -15,7 +24,7 @@ function App() {
     // 1. Properly type the WebSocket ref
     const socketRef = useRef<WebSocket | null>(null);
 
-    const [qid, set_qid] = useState<number>(0);
+    const [question, set_question] = useState<QuestionData | null>(null);
     const [phase, set_phase] = useState<number>(0);
     const [next, set_next] = useState<number>(0);
 
@@ -27,7 +36,8 @@ function App() {
     };
 
     const handleNext = () => {
-        NextQuestion({ debug });
+        if (!question) return;
+        NextQuestion({ question_id:question.id, debug:debug });
     };
 
     if (!user) {
@@ -57,14 +67,18 @@ function App() {
             )}
 
             <ConnectSocket
-                set_qid={set_qid}
+                set_question={set_question}
                 set_phase={set_phase}
                 set_context={set_context}
                 set_next={set_next}
                 debug={debug}
             />
 
-            <Question qid={qid} phase={phase} user={user} debug={debug} />
+            <Question
+                question={question}
+                user={user}
+                phase={phase}
+                debug={debug}/>
         </>
     );
 }
