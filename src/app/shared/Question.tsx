@@ -27,11 +27,13 @@ function Question({ question, user, phase, debug }: QuestionProps) {
     const [saved, setSaved] = useState<boolean>(true);
 
     useEffect(() => {
+        if(user.isAdmin) return;
         const fetchAnswer = async () => {
             if (!question) return null;
             try {
                 const data: AnswerData | null = await getAnswer(question.id, user.id, debug);
                 if(data){
+                    if(debug) console.log("Got answer", data);
                     setAnswer(data.answer);
                     setSaved(false);
                 }

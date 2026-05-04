@@ -72,14 +72,13 @@ export default function Login({ login, loading, debug }: LoginProps) {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div>
+        <div className="text-3xl font-bold underline text-blue-600">
             <h2>Login</h2>
             {failed && (<p style={{ color: "red" }}>{errorMessage}</p>)}
 
             <form onSubmit={handleLogin}>
                 <input
                     type="number"
-                    disabled={isAdmin}
                     placeholder="ID"
                     value={userId ?? ""}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {

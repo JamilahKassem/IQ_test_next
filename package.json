@@ -41,8 +41,11 @@
     "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.6.0",
+    "autoprefixer": "^10.5.0",
     "babel-plugin-react-compiler": "1.0.0",
+    "postcss": "^8.5.13",
     "prisma": "^7.8.0",
+    "tailwindcss": "^4.2.4",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   }

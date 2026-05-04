@@ -86,9 +86,9 @@ export async function getNextQuestion(question_id: number, debug: boolean = fals
                 id: true,
                 image: true,
                 time: true,
-                number_answers: true,
+                number_answers: true
             },
-        });
+        })
     } catch (error) {
         console.error("Error creating result:", error);
         throw error;
