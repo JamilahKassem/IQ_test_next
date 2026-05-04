@@ -87,41 +87,68 @@ function Question({ question, user, phase, debug }: QuestionProps) {
 
     if (phase === 4) {
         return (
-            <div className="align-items-center center-self">
-                {/* Note: In Next.js/TS, ensure the path to images is handled correctly via public folder or imports */}
-                <img
-                    alt="Question Task"
-                    className="center-self question"
-                    src={`/images/${question.image}`}
-                    key={question.id}
-                />
+            <div className="h-screen overflow-hidden flex flex-col p-4 bg-slate-50">
+                {/* Question Image Container - Expands to fill top space */}
+                <div className="flex-1 min-h-0 bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-slate-100 flex items-center justify-center">
+                    <img
+                        alt="Question Task"
+                        src={`/images/${question.image}`}
+                        key={question.id}
+                        className="max-w-full max-h-full object-contain rounded-lg"
+                    />
+                </div>
+
                 {!user.isAdmin && (
-                    <>
-                        <div className="answer-container w-75">
+                    <div className="flex flex-col gap-4 pt-4 shrink-0">
+                        {/* Answer Selection Grid - Fixed height based on content */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             {Array.from({ length: question.number_answers }, (_, i) => (
-                                <label key={i}>
-                                    {String.fromCharCode(startLetter.charCodeAt(0) + i)}){" "}
+                                <label
+                                    key={i}
+                                    className={`
+                            relative flex flex-col items-center justify-center py-4 md:py-6 rounded-2xl border-2 cursor-pointer transition-all
+                            ${answer === i
+                                        ? "border-indigo-600 bg-indigo-50 ring-4 ring-indigo-100"
+                                        : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"}
+                        `}
+                                >
                                     <input
                                         type="radio"
                                         name="Answer"
+                                        className="sr-only"
                                         value={i}
                                         checked={answer === i}
                                         onChange={handleChange}
                                     />
+                                    <span className={`text-xl md:text-2xl font-black ${answer === i ? "text-indigo-700" : "text-slate-400"}`}>
+                            {String.fromCharCode(startLetter.charCodeAt(0) + i)}
+                        </span>
                                 </label>
                             ))}
                         </div>
-                        <div>
-                            {sent && <p>Answer Saved.</p>}
+
+                        {/* Submission Area - Bottom Bar */}
+                        <div className="flex flex-col items-center pb-2">
+                            {sent && (
+                                <p className="text-green-600 font-bold mb-2 text-sm flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
+                                    Answer Recorded
+                                </p>
+                            )}
                             <button
-                                className="btn center-self btn-success text-black mb-3 w-75"
                                 disabled={answer === null}
                                 onClick={sendAnswer}
+                                className={`
+                        w-full md:w-80 py-4 rounded-2xl font-extrabold text-lg transition-all
+                        ${answer === null
+                                    ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+                                    : "bg-slate-900 text-white hover:bg-black shadow-xl active:scale-95"}
+                    `}
                             >
-                                Submit
+                                Submit Answer
                             </button>
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         );
@@ -129,9 +156,12 @@ function Question({ question, user, phase, debug }: QuestionProps) {
 
     if (phase === 3) {
         return (
-            <h2 className="mx-auto text-center fs-lg-6 fs-md-5 w-lg-75">
-                {user.isAdmin ? "Press next to proceed" : "Get Ready for next question"}
-            </h2>
+            <div className="text-center py-20">
+                <h2 className="text-4xl font-black text-slate-800 animate-pulse">
+                    {user.isAdmin ? "Awaiting your command..." : "Take a breath. Get ready."}
+                </h2>
+                <p className="text-slate-500 mt-4 font-medium">The next challenge is loading.</p>
+            </div>
         );
     }
 

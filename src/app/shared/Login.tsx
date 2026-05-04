@@ -72,36 +72,64 @@ export default function Login({ login, loading, debug }: LoginProps) {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div className="text-3xl font-bold underline text-blue-600">
-            <h2>Login</h2>
-            {failed && (<p style={{ color: "red" }}>{errorMessage}</p>)}
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+            <div className="w-full max-w-md bg-white rounded-xl shadow-lg border border-slate-200 p-8">
+                <h2 className="text-3xl font-extrabold text-slate-800 mb-6 text-center tracking-tight">
+                    IQ Test Login
+                </h2>
 
-            <form onSubmit={handleLogin}>
-                <input
-                    type="number"
-                    placeholder="ID"
-                    value={userId ?? ""}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        const val = e.target.value;
-                        setUserId(val === "" ? "" : parseInt(val, 10));
-                    }}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                />
-                <label>
-                    Admin
-                    <input
-                        type="checkbox"
-                        checked={isAdmin}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setIsAdmin(e.target.checked)}
-                    />
-                </label>
-                <input type="submit" value="Login" />
-            </form>
+                {failed && (
+                    <div className="mb-4 p-3 rounded bg-red-50 border border-red-200">
+                        <p className="text-sm text-red-600 text-center font-medium">
+                            {errorMessage}
+                        </p>
+                    </div>
+                )}
+
+                <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                        <input
+                            type="number"
+                            placeholder="User ID"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
+                            value={userId ?? ""}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                const val = e.target.value;
+                                setUserId(val === "" ? "" : parseInt(val, 10));
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
+                            value={password}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-between py-2">
+                        <label className="flex items-center gap-2 cursor-pointer text-slate-600 text-sm font-medium">
+                            <input
+                                type="checkbox"
+                                className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                checked={isAdmin}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setIsAdmin(e.target.checked)}
+                            />
+                            Admin Access
+                        </label>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all active:transform active:scale-[0.98]"
+                    >
+                        Start Assessment
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
