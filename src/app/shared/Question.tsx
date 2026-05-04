@@ -138,8 +138,7 @@ function Question({ question, user, phase, debug }: QuestionProps) {
                             <button
                                 disabled={answer === null}
                                 onClick={sendAnswer}
-                                className={`
-                        w-full md:w-80 py-4 rounded-2xl font-extrabold text-lg transition-all
+                                className={`w-full md:w-80 py-4 rounded-2xl font-extrabold text-lg transition-all
                         ${answer === null
                                     ? "bg-slate-200 text-slate-400 cursor-not-allowed"
                                     : "bg-slate-900 text-white hover:bg-black shadow-xl active:scale-95"}
